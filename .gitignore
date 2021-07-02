@@ -1,0 +1,5 @@
+# environment
+config.env
+
+.npm
+node_modules/

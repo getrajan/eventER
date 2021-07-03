@@ -67,6 +67,28 @@ eventSchema.virtual('durationWeeks').get(function(){
 
     return this.duration/7;
 });
+// this virtual adds all review of specific event 
+// VIRTUAL POPULATE
+eventSchema.virtual('comments',{
+    ref: 'Comment',
+    foreignField: 'event',
+    localField: '_id'
+});
+
+// virtual populate for participation
+eventSchema.virtual('participations', {
+    ref:'Participation',
+    foreignField: 'event',
+    localField: '_id'
+});
+
+// virtual pulupate for likes
+eventSchema.virtual('likes', {
+    ref:"Like",
+    foreignField: 'event',
+    localField: '_id'
+});
+
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 eventSchema.pre('save',function(next){

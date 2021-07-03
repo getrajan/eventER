@@ -9,6 +9,7 @@ const globalErrorHandler = require('./controller/errorController');
 
 const userRoute = require('./routes/userRoute');
 const eventRoute = require('./routes/eventRoutes');
+const commentRoute = require('./routes/commentRoutes');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 // 2. ROUTES
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/events',eventRoute);
+// app.use('/api/v1/comments',commentRoute);
 
 // handle undefined routers
 app.all('*', (req, res, next) => {

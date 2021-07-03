@@ -66,8 +66,31 @@ exports.aliasTopEvents = (req,res,next) => {
     next();
 }
 
+// this will only give access to Admin and Current user of Event
+exports.restrictEvent = role =>{
+    return async(req,res,next)=> {
+         const event = await Event.findById(req.params.id);
+         let users =[];
+        if(event.createdBy == req.user.id){
+            users.push(req.user.id);
+        }
+        users.push(role);
+
+        if(users.includes(req.user.id)||users.includes("admin")){
+            return next();
+        }
+        return next(new AppError("You don not have permission for this Event",403));
+    }
+}
+
+// exports.restrictEvent = (req,res,next) => {
+
+// }
+
 exports.createEvent = factory.createOne(Event);
+exports.getEvent = factory.getOne(Event, { path: 'comments participations, likes'});
 exports.getEvents = factory.getAll(Event);
 exports.updateEvent = factory.updateOne(Event);
+exports.deleteEvent = factory.deleteOne(Event);
 
 

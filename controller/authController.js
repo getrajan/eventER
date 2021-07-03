@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 const User = require('./../model/userModel');
-const sendEmail = require('./../utils/email');
 const sendMail = require('./../utils/email');
 
 const signToken = id => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
+        // expiresIn:"5s"
     });
 }
 
@@ -193,4 +193,14 @@ exports.updatePassword = catchAsync(async (req,res,next)=>{
 
     // 4. Log user in, Send JWT
     createSendToken(user,200,res);
-})
+});
+
+exports.restrictTo = (...roles) =>{
+    return (req,res,next) =>{
+        if(!roles.includes(req.user.role)){
+            return next(new AppError("You don't have permission to perform this action",403));
+        }
+        next();
+    }
+}
+

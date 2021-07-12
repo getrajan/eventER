@@ -9,7 +9,7 @@ const sendMail = require('./../utils/email');
 const signToken = id => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
-        // expiresIn:"5s"
+        // expiresIn:"1m"
     });
 }
 
@@ -33,6 +33,7 @@ const createSendToken = (user, statusCode, res) => {
     res.status(statusCode).json({
         status: "success",
         token: token,
+        exp: jwt.decode(token)['exp'],
         data: {
             user
         }

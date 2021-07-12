@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 const slugify = require('slugify');
 
 const eventSchema = new mongoose.Schema({
@@ -30,6 +29,10 @@ const eventSchema = new mongoose.Schema({
         required:[true,"Event must have a cover image"]
     },
     featureImages:[String],
+    price:{
+        type:Number,
+        default:0
+    },
     createdAt:{
         type:Date,
         default:Date.now(),
@@ -41,11 +44,11 @@ const eventSchema = new mongoose.Schema({
         required:[true,"Created by is required"]
     },
     startDate:{
-        type:Date,
+        type:String,
         required:[true,"Event must have a start date"]
     },
     endDate:{
-        type:Date,
+        type:String,
         required:[true,"Event must have a end date"],
         validate:{
             validator:function(el){
@@ -56,17 +59,18 @@ const eventSchema = new mongoose.Schema({
     },
     duration:{
         type:Number,
-        required:[true,'An event must have a duration'],
-    }
+        // required:[true,'An event must have a duration'],
+    },
 },{
     toJSON:{virtuals:true},
     toObject:{virtuals:true}
 });
 
-eventSchema.virtual('durationWeeks').get(function(){
 
-    return this.duration/7;
-});
+// eventSchema.virtual('durationWeeks').get(function(){
+
+//     return this.duration/7;
+// });
 // this virtual adds all review of specific event 
 // VIRTUAL POPULATE
 eventSchema.virtual('comments',{

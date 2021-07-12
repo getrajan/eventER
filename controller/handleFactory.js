@@ -9,7 +9,6 @@ const getAllMessage = model => `${model}s are displayed successfully`
 
 
 exports.createOne = Model => catchAsync( async (req,res,next)=>{
-    console.log('********body',req.body);
     const doc = await Model.create(req.body);
     if(doc.constructor.modelName==="Event"){
         doc.createdBy = req.user.id;

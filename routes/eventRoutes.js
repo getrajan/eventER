@@ -27,7 +27,7 @@ router.use('/:eventId/likes',likeRoutes);
 router.route('/top-5-long-events').get(eventController.aliasTopEvents,eventController.getEvents);
 
 router.route('/')
-    .post(eventController.uploadEventImages, eventController.resizeEventImages,eventController.createEvent)
+    .post(eventController.uploadEventImages, eventController.resizeEventImages,eventController.setUserId,eventController.createEvent)
     .get(authController.protect,eventController.getEvents);
 
 router.route('/:id')

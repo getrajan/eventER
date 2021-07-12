@@ -34,6 +34,9 @@ participationSchema.pre(/^find/, function(next) {
     this.populate({
         path: 'user',
         select: 'name profilePhoto'
+    }).populate({
+        path:'event',
+        select: '_id title coverImage'
     })
     next(); 
 });

@@ -8,6 +8,8 @@ const factory = require('./../controller/handleFactory');
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req,file,cb)=>{
+    console.log("***image mime ",file.mimetype);
+    console.log("image is ",file);
     if(file.mimetype.startsWith('image')){
         cb(null,true);
     }else{
@@ -27,6 +29,7 @@ exports.uploadEventImages = upload.fields([
 ]);
 
 exports.resizeEventImages = catchAsync(async (req,res,next)=>{
+    console.log(`check created by ${req.body.createdBy}`);
     if(!req.files.coverImage && !req.files.featureImages) return next();
 
     if(req.files.coverImage){
@@ -87,8 +90,14 @@ exports.restrictEvent = role =>{
 
 // }
 
+exports.setUserId =(req,res,next) =>{
+    if(!req.body.createdBy) req.body.createdBy = req.user.id;
+    console.log("here creaeted by ",req.body.createdBy);
+    next();
+};
+
 exports.createEvent = factory.createOne(Event);
-exports.getEvent = factory.getOne(Event, { path: 'comments participations, likes'});
+exports.getEvent = factory.getOne(Event, { path: 'comments participations likes'});
 exports.getEvents = factory.getAll(Event);
 exports.updateEvent = factory.updateOne(Event);
 exports.deleteEvent = factory.deleteOne(Event);

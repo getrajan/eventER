@@ -49,8 +49,18 @@ const userSchema = new mongoose.Schema({
         default: true,
         select: false
     },
-
+    
+},{
+    toJSON: {virtuals:true},
+    toObject: {virtuals:true}
 });
+
+// interested event virtual populate
+userSchema.virtual('events',{
+    ref:"Participation",
+    foreignField:"user",
+    localField:"_id"
+})
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
@@ -71,6 +81,7 @@ userSchema.pre('save', function (next) {
 
 userSchema.pre(/^find/, function (next) {
     this.find({ active: { $ne: false } });
+   
     next();
 });
 
